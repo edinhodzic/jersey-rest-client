@@ -4,6 +4,8 @@ This is a REST service client abstraction. In other words, this is a library con
 
 This library assumes and operates on a set of conventions around CRUD and query operations, which the RESTful web service endpoints should ideally abide by. The service response REST conventions are mirrored by an equivalent set of conventions in this client library.
 
+[![Build Status](https://travis-ci.org/edinhodzic/jersey-rest-client.svg?branch=master)](https://travis-ci.org/edinhodzic/jersey-rest-client)
+
 ## Service REST and client API conventions
 
 | HTTP Method | Description | Collection URI HTTP response       | Item URI HTTP response             | Client API response               |
@@ -16,6 +18,8 @@ This library assumes and operates on a set of conventions around CRUD and query 
     TODO add query endpoint convention
 
 <sup>**Tip** : use the [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library to develop RESTful web services which use the above conventions</sup>
+
+<sup>**Top tip** : use the [`jersey-rest-service-archetype`](https://github.com/edinhodzic/jersey-rest-service-archetype) to very quickly create RESTful web service projects from scratch which use the above conventions</sup>
 
 # What's under the hood?
 
@@ -71,6 +75,29 @@ Create a user:
       case Success(user) => ...
       case Failure(throwable) => ...
     }
+
+Read a user:
+
+    // get user and pattern match on Try[Option[User]]
+    userRestClient get "5627a1764568cdf041e0996e" match {
+      case Success(maybeUser) => maybeUser match {
+        case Some(user) => ...
+        case None => ...
+      }
+      case Failure(throwable) => ...
+    }
+
+Update a user:
+
+    // TODO implement
+
+Delete a user:
+
+    // TODO implement
+    
+Query user service:
+
+    // TODO implement
     
 # What's next?
 
@@ -81,3 +108,4 @@ There are incomplete features in this client. For example and as above, it shoul
 ## Future development ideas
 
 - _Monitor and gracefully handle remote system call failures_ : implement [circuit breaker](http://martinfowler.com/bliki/CircuitBreaker.html) pattern
+- _Refactor to inline with [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library_ : The conventions used in this project are perfectly aligned to RESTful web services developed using the [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library. For this reason it may make sense to have this and that project as Maven modules under one Maven project.
