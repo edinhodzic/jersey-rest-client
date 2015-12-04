@@ -2,7 +2,7 @@ package com.edinhodzic.client
 
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.Response
-import javax.ws.rs.core.Response.Status.{CREATED, fromStatusCode}
+import javax.ws.rs.core.Response.Status.{CREATED, NOT_FOUND, OK, fromStatusCode}
 
 import com.edinhodzic.client.AbstractRestClient._
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter
@@ -43,6 +43,30 @@ abstract class AbstractRestClient[T: Manifest]
     }
   }
 
+  def get(resourceId: String): Try[Option[T]] = {
+    val resourceUrl: String = collectionResourceUrl(resourceId)
+    implicit val clientResponse: ClientResponse = webResource(resourceUrl) get classOf[ClientResponse]
+    clientResponseStatus match {
+      case OK =>
+        logInfo("GET", resourceUrl)
+        Success(Some(getEntity(clientResponse)))
+      case NOT_FOUND =>
+        logInfo("GET", resourceUrl)
+        Success(None)
+      case _ =>
+        logError("GET", resourceUrl)
+        Failure(raiseExceptionFor("GET", resourceUrl))
+    }
+  }
+
+  // TODO implement updating (not necessarily in this class); again this can be a whole or partial update
+
+  def delete(resourceId: String): Try[Option[Unit]] =
+    Failure(new UnsupportedOperationException("implement me")) // TODO implement deletion
+
+  // TODO implement querying (not necessarily in this class)
+
+  def collectionResourceUrl(id: String): String = s"$collectionUrl/$id"
 
   private def webResource(url: String, resource: Option[T] = None): WebResource#Builder = {
     val builder: WebResource#Builder = client resource url `type` APPLICATION_JSON accept APPLICATION_JSON

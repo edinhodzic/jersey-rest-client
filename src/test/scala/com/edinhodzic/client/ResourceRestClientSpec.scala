@@ -2,7 +2,7 @@ package com.edinhodzic.client
 
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.Response.Status
-import javax.ws.rs.core.Response.Status.{CREATED, INTERNAL_SERVER_ERROR}
+import javax.ws.rs.core.Response.Status.{CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 
 import com.edinhodzic.client.domain.Resource
 import com.sun.jersey.api.client.{Client, ClientResponse, WebResource}
@@ -64,6 +64,62 @@ class ResourceRestClientSpec extends SpecificationWithJUnit with Mockito {
     "return a failure when jersey client post does not return a http created" in {
       mockClientResponse(INTERNAL_SERVER_ERROR)
       abstractRestClient post resource must beFailedTry
+    }
+  }
+
+  "Client get function" should {
+
+    "invoke jersey client get function" in {
+      mockClientResponse(OK)
+
+      abstractRestClient get resourceId
+      there was one(jerseyClient).resource(s"http://api.example.com:9001/resource/$resourceId")
+      there was one(webResourceBuilder).get(classOf[ClientResponse])
+    }
+
+    "return a success with some when jersey client get returns http ok" in {
+      mockClientResponse(OK, resource)
+      abstractRestClient get resourceId must beSuccessfulTry(Some(resource))
+    }
+
+    "return a success with none when jersey client get returns http not found" in {
+      mockClientResponse(NOT_FOUND)
+      abstractRestClient get resourceId must beSuccessfulTry(None)
+    }
+
+    "return a failure when jersey client get does not return http ok or not found" in {
+      mockClientResponse(INTERNAL_SERVER_ERROR)
+      abstractRestClient get resourceId must beFailedTry
+    }
+  }
+
+  "Client put function" should {
+    // the implementation here depends on whether it's whole or partial updates which the client supports
+    "invoke jersey client put function" in {
+      skipped("to be implemented") // TODO
+    }
+  }
+
+  "Client delete function" should {
+    "invoke jersey client delete function" in {
+      skipped("to be implemented") // TODO
+    }
+    "return a success with some when jersey client delete returns http no content" in {
+      skipped("to be implemented") // TODO
+    }
+
+    "return a success with none when jersey client delete returns http not found" in {
+      skipped("to be implemented") // TODO
+    }
+
+    "return a failure when jersey client delete does not return http no content or not found" in {
+      skipped("to be implemented") // TODO
+    }
+  }
+
+  "Client query function" should {
+    "do something" in {
+      skipped("to be implemented") // TODO
     }
   }
 
