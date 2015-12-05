@@ -38,7 +38,7 @@ Testing:
 Suppose we were implementing a client for a user REST service; a `UserRestClient`.
 
 ## Example 1 - minimal implementation
-```java
+```scala
 class UserRestClient (url: String, username: String, password: String)
   extends AbstractRestClient[User](url, username, password)
 ```
@@ -56,37 +56,37 @@ class UserRestClient @Autowired()
 Following on from the above hypothetical user REST service and client scenario.
 
 Add Maven dependency to your project:
-
-    <dependency>
-      <groupId>com.edinhodzic.client</groupId>
-      <artifactId>jersey-rest-client</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-    </dependency>
-
+```xml
+<dependency>
+  <groupId>com.edinhodzic.client</groupId>
+  <artifactId>jersey-rest-client</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
 Instantiate a `UserRestClient`:
-
-    val userRestClient: UserRestClient = new UserRestClient(
-    "http://api.example.com:9023", "us3rn4m3", "p4s5w0rd")
-
+```scala
+val userRestClient: UserRestClient = new UserRestClient(
+"http://api.example.com:9023", "us3rn4m3", "p4s5w0rd")
+```
 Create a user:
-
-    // post user and pattern match on Try[User]
-    userRestClient post new User("me") match {
-      case Success(user) => ...
-      case Failure(throwable) => ...
-    }
-
+```scala
+// post user and pattern match on Try[User]
+userRestClient post new User("me") match {
+  case Success(user) => ...
+  case Failure(throwable) => ...
+}
+```
 Read a user:
-
-    // get user and pattern match on Try[Option[User]]
-    userRestClient get "5627a1764568cdf041e0996e" match {
-      case Success(maybeUser) => maybeUser match {
-        case Some(user) => ...
-        case None => ...
-      }
-      case Failure(throwable) => ...
-    }
-
+```scala
+// get user and pattern match on Try[Option[User]]
+userRestClient get "5627a1764568cdf041e0996e" match {
+  case Success(maybeUser) => maybeUser match {
+    case Some(user) => ...
+    case None => ...
+  }
+  case Failure(throwable) => ...
+}
+```
 Update a user:
 
     // TODO implement
