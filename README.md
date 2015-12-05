@@ -38,19 +38,19 @@ Testing:
 Suppose we were implementing a client for a user REST service; a `UserRestClient`.
 
 ## Example 1 - minimal implementation
-
-    class UserRestClient (url: String, username: String, password: String)
-      extends AbstractRestClient[User](url, username, password)
-
+```java
+class UserRestClient (url: String, username: String, password: String)
+  extends AbstractRestClient[User](url, username, password)
+```
 ## Example 2 - wired up with Spring
-
-    @Component
-    class UserRestClient @Autowired()
-    (@Value("service.user.url") url: String,
-     @Value("service.user.username") username: String,
-     @Value("service.user.password") password: String)
-      extends AbstractRestClient[User](url, username, password)
-
+```scala
+@Component
+class UserRestClient @Autowired()
+(@Value("service.user.url") url: String,
+ @Value("service.user.username") username: String,
+ @Value("service.user.password") password: String)
+  extends AbstractRestClient[User](url, username, password)
+```
 # Quick start usage
 
 Following on from the above hypothetical user REST service and client scenario.
