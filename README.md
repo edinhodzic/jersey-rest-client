@@ -107,5 +107,6 @@ There are incomplete features in this client. For example and as above, it shoul
 
 ## Future development ideas
 
-- _Monitor and gracefully handle remote system call failures_ : implement [circuit breaker](http://martinfowler.com/bliki/CircuitBreaker.html) pattern
-- _Refactor to inline with [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library_ : The conventions used in this project are perfectly aligned to RESTful web services developed using the [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library. For this reason it may make sense to have this and that project as Maven modules under one Maven project.
+- [ ] _Monitor and gracefully handle remote system call failures_ : implement [circuit breaker](http://martinfowler.com/bliki/CircuitBreaker.html) pattern
+- [ ] _Refactor to inline with [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library_ : The conventions used in this project are perfectly aligned to RESTful web services developed using the [`jersey-rest-service`](https://github.com/edinhodzic/jersey-rest-service) library. For this reason it may make sense to have this and that project as Maven modules under one Maven project.
+- [ ] implement a performant non-HTTP client for use on service to service communication
