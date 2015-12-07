@@ -92,9 +92,16 @@ Update a user:
     // TODO implement
 
 Delete a user:
-
-    // TODO implement
-    
+```scala
+// delete user and pattern match on Try[Option[User]]
+userRestClient delete "5627a1764568cdf041e0996e" match {
+  case Success(option) => option match {
+    case Some() => ...
+    case None => ...
+  }
+  case Failure(throwable) => ...
+}
+```
 Query user service:
 
     // TODO implement
