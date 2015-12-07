@@ -2,7 +2,7 @@ package com.edinhodzic.client
 
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.Response
-import javax.ws.rs.core.Response.Status.{CREATED, NOT_FOUND, OK, fromStatusCode}
+import javax.ws.rs.core.Response.Status.{CREATED, NOT_FOUND, NO_CONTENT, OK, fromStatusCode}
 
 import com.edinhodzic.client.AbstractRestClient._
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter
@@ -61,8 +61,21 @@ abstract class AbstractRestClient[T: Manifest]
 
   // TODO implement updating (not necessarily in this class); again this can be a whole or partial update
 
-  def delete(resourceId: String): Try[Option[Unit]] =
-    Failure(new UnsupportedOperationException("implement me")) // TODO implement deletion
+  def delete(resourceId: String): Try[Option[Unit]] = {
+    val resourceUrl: String = collectionResourceUrl(resourceId)
+    implicit val clientResponse: ClientResponse = webResource(resourceUrl) delete classOf[ClientResponse]
+    clientResponseStatus match {
+      case NO_CONTENT =>
+        logInfo("DELETE", resourceUrl)
+        Success(Some())
+      case NOT_FOUND =>
+        logInfo("DELETE", resourceUrl)
+        Success(None)
+      case _ =>
+        logError("DELETE", resourceUrl)
+        Failure(raiseExceptionFor("DELETE", resourceUrl))
+    }
+  }
 
   // TODO implement querying (not necessarily in this class)
 

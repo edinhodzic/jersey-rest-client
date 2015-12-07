@@ -2,7 +2,7 @@ package com.edinhodzic.client
 
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.Response.Status
-import javax.ws.rs.core.Response.Status.{CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
+import javax.ws.rs.core.Response.Status.{CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK}
 
 import com.edinhodzic.client.domain.Resource
 import com.sun.jersey.api.client.{Client, ClientResponse, WebResource}
@@ -36,6 +36,7 @@ class ResourceRestClientSpec extends SpecificationWithJUnit with Mockito {
 
     webResourceBuilder post classOf[ClientResponse] returns jerseyClientResponse
     webResourceBuilder get classOf[ClientResponse] returns jerseyClientResponse
+    webResourceBuilder delete classOf[ClientResponse] returns jerseyClientResponse
 
     webResourceBuilder
   }
@@ -101,19 +102,28 @@ class ResourceRestClientSpec extends SpecificationWithJUnit with Mockito {
   }
 
   "Client delete function" should {
+
     "invoke jersey client delete function" in {
-      skipped("to be implemented") // TODO
+      mockClientResponse(NO_CONTENT)
+
+      abstractRestClient delete resourceId
+      there was one(jerseyClient).resource(s"http://api.example.com:9001/resource/$resourceId")
+      there was one(webResourceBuilder).delete(classOf[ClientResponse])
     }
+
     "return a success with some when jersey client delete returns http no content" in {
-      skipped("to be implemented") // TODO
+      mockClientResponse(NO_CONTENT, resource)
+      abstractRestClient delete resourceId must beSuccessfulTry(Some())
     }
 
     "return a success with none when jersey client delete returns http not found" in {
-      skipped("to be implemented") // TODO
+      mockClientResponse(NOT_FOUND, resource)
+      abstractRestClient delete resourceId must beSuccessfulTry(None)
     }
 
     "return a failure when jersey client delete does not return http no content or not found" in {
-      skipped("to be implemented") // TODO
+      mockClientResponse(INTERNAL_SERVER_ERROR)
+      abstractRestClient delete resourceId must beFailedTry
     }
   }
 
