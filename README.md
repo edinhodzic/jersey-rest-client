@@ -87,10 +87,14 @@ userRestClient get "5627a1764568cdf041e0996e" match {
   case Failure(throwable) => ...
 }
 ```
-Update a user:
-
-    // TODO implement
-
+Update a user (not yet implemented):
+```scala
+// put user and pattern match on Try[Unit]
+userRestClient put new User(id = "1", data = "me") match {
+  case Success() => ...
+  case Failure(throwable) => ...
+}
+```
 Delete a user:
 ```scala
 // delete user and pattern match on Try[Option[User]]
